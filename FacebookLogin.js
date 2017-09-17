@@ -27,6 +27,23 @@ async function logIn(appId) {
   }
 }
 
+async function logOut(appId) {
+  if (!appId) { 
+    throw new Execption('You should provide your Facebook App Id');
+  }
+  const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(appId, {
+      permissions: ['public_profile'],
+  });
+
+  if (type === 'success') {
+    const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+    const userData = await response.json();
+    const userPic = `https://graph.facebook.com/v2.10/${userData.id}/picture?access_token=${token}`;
+    userData.pic = userPic;
+    return userData;
+  }
+}
+
 export default class FacebookLogin extends React.Component {
 
   constructor(props) {
@@ -40,15 +57,22 @@ export default class FacebookLogin extends React.Component {
     this.setState(data);
   }
 
+  handleLogout = () => {
+    this.setState({
+      pic: null,
+      name: null,
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.state.name ? `Welcome ${this.state.name}` : this.props.textMessage}</Text>
-        <Button onPress={this.handleLogin} title="FB Login" />
         <Image
-            style={{width: 50, height: 50}}
-            source={{uri: this.state.pic ? this.state.pic : this.props.imagePlaceholder}}
-          />
+          style={{width: 50, height: 50}}
+          source={{uri: this.state.pic ? this.state.pic : this.props.imagePlaceholder}}
+        />
+        <Text>{this.state.name ? `Welcome ${this.state.name}` : this.props.textMessage}</Text>
+          {this.state.name ? <Button onPress={this.handleLogout} title="LogOut" /> : <Button onPress={this.handleLogin} title="FB Login" /> }
       </View>
     );
   }
