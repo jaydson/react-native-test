@@ -27,23 +27,6 @@ async function logIn(appId) {
   }
 }
 
-async function logOut(appId) {
-  if (!appId) { 
-    throw new Execption('You should provide your Facebook App Id');
-  }
-  const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(appId, {
-      permissions: ['public_profile'],
-  });
-
-  if (type === 'success') {
-    const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-    const userData = await response.json();
-    const userPic = `https://graph.facebook.com/v2.10/${userData.id}/picture?access_token=${token}`;
-    userData.pic = userPic;
-    return userData;
-  }
-}
-
 export default class FacebookLogin extends React.Component {
 
   constructor(props) {
