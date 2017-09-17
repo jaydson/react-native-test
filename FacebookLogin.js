@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 
 async function logIn(appId) {
   if (!appId) { 
-    throw new Execption('You should provide your Facebook App Id');
+    throw new Exception('You should provide your Facebook App Id');
   }
   const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(appId, {
       permissions: ['public_profile'],
