@@ -36,19 +36,25 @@ export default class FacebookLogin extends React.Component {
   }
 
   handleLogin = async function() {
-    const data = await logIn(this.props.appId);
-    this.setState(data);
+    const userData = await logIn(this.props.appId);
+    this.setState({data: userData});
+  }
+
+  handleLogout = () => {
+    this.setState({
+      data: null
+    });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.state.name ? `Welcome ${this.state.name}` : this.props.textMessage}</Text>
-        <Button onPress={this.handleLogin} title="FB Login" />
         <Image
-            style={{width: 50, height: 50}}
-            source={{uri: this.state.pic ? this.state.pic : this.props.imagePlaceholder}}
-          />
+          style={{width: 50, height: 50}}
+          source={{uri: this.state.data ? this.state.data.pic : this.props.imagePlaceholder}}
+        />
+        <Text>{this.state.data ? `Welcome ${this.state.data.name}` : this.props.textMessage}</Text>
+          {this.state.data ? <Button onPress={this.handleLogout} title="LogOut" /> : <Button onPress={this.handleLogin} title="FB Login" /> }
       </View>
     );
   }
