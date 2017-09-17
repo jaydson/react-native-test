@@ -1,3 +1,10 @@
+## Specifics
+- Install Expo on your Android Phone  
+- Enter on the react-native-test directory  
+- Run `yarn start`  
+- Scan the QRCode with the Expo app  
+
+## Creat React App Native Stuff
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
